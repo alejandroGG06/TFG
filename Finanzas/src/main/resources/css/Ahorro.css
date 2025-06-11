@@ -1,0 +1,14 @@
+.titulo-ahorro {
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.valor-ahorro {
+    -fx-font-size: 32px;
+    -fx-text-fill: #4CAF50;
+    -fx-font-weight: bold;
+}
+.root {
+    -fx-background-color: #0A1D2D;
+}

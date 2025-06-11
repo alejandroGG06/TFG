@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="form-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.menus.finanzas.CrearUserController">
+   <children>
+      <TextField fx:id="nombre" layoutX="68.0" layoutY="120.0" promptText="nombre" styleClass="custom-textfield" />
+      <TextField fx:id="correo" layoutX="68.0" layoutY="274.0" promptText="correo" styleClass="custom-textfield" />
+      <TextField fx:id="monto" layoutX="355.0" layoutY="120.0" promptText="salario" styleClass="custom-textfield" />
+       <TextField fx:id="contraseña" layoutX="355.0" layoutY="274.0" promptText="contraseña" styleClass="custom-textfield" />
+
+       <Button layoutX="267.0" layoutY="330.0" mnemonicParsing="false" onAction="#crearUsuario" styleClass="custom-button" text="Crear" />
+      <ImageView fitHeight="136.0" fitWidth="112.0" layoutX="245.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Imagenes/finzen_logo_only.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

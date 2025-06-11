@@ -1,0 +1,32 @@
+
+/* Etiquetas */
+.label-login {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 0 5 0;
+}
+
+/* Campos de texto */
+.textfield-login {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+/* Botones */
+.boton-login {
+    -fx-background-color: #00A9D4;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+
+.boton-login:hover {
+    -fx-background-color: #007a99;
+}

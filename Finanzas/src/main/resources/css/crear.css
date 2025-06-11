@@ -1,0 +1,39 @@
+
+
+.custom-textfield {
+    -fx-background-color: #f0f4f8;
+    -fx-text-fill: #0a1d2d;
+    -fx-prompt-text-fill: #99cce0;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #1ba1e2;
+    -fx-border-width: 1;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 14px;
+}
+
+.custom-button {
+    -fx-background-color: #1ba1e2;
+    -fx-text-fill: #0a1d2d;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-padding: 10 20 10 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-font-size: 14px;
+}
+
+.custom-button:hover {
+    -fx-background-color: #139ad6;
+}
+
+.custom-button:pressed {
+    -fx-background-color: #0f7ba7;
+}
+.choice-box{
+    -fx-text-fill: white;
+}
+
+.form-pane {
+    -fx-background-color: #0a1d2d;
+}

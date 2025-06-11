@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="panelprincipal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="655.0" styleClass="panel-principal" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.menus.finanzas.PrincipalController">
+   <children>
+
+
+      <PieChart fx:id="pieChart" animated="false" layoutX="45.0" layoutY="254.0" maxHeight="255.0" maxWidth="350.0" minHeight="30.0" minWidth="30.0" prefHeight="255.0" prefWidth="306.0" style="-fx-background-color: #f0f4f8; -fx-border-radius: 15; -fx-background-radius: 15;" />
+      <Label layoutX="70.0" layoutY="154.0" styleClass="subtitulo" text="SALARIO">
+         <font>
+            <Font name="Roboto Light" size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="salario_inici" layoutX="52.0" layoutY="193.0" prefHeight="42.0" prefWidth="103.0" styleClass="monto-salario">
+         <font>
+            <Font name="Roboto Light" size="30.0" />
+         </font></Label>
+      <Pane fx:id="panelgastos" layoutX="381.0" layoutY="112.0" prefHeight="413.0" prefWidth="237.0" styleClass="panel-gastos">
+         <effect>
+            <DropShadow color="gray" offsetX="4" offsetY="4" radius="8" />
+         </effect>
+         <children>
+            <VBox fx:id="gastosBox" layoutX="14.0" layoutY="78.0" prefHeight="272.0" prefWidth="209.0" styleClass="lista-gastos" />
+            <Label layoutX="74.0" layoutY="25.0" prefHeight="42.0" prefWidth="103.0" styleClass="titulo-seccion" text="GASTOS">
+               <font>
+                  <Font name="Roboto Light" size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="88.0" layoutY="369.0" onAction="#abrirvista" styleClass="boton-accion" text="Añadir">
+               <font>
+                  <Font name="Roboto Light" size="13.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+
+      <Label layoutX="230.0" layoutY="154.0" styleClass="subtitulo" text="GASTADO">
+      <font>
+         <Font name="Roboto Light" size="17.0" />
+      </font>
+      </Label>
+      <Label fx:id="gastadototal" layoutX="202.0" layoutY="193.0" prefHeight="42.0" prefWidth="117.0" styleClass="monto-salario">
+         <font>
+            <Font name="Roboto Light" size="30.0" />
+         </font></Label>
+      <ChoiceBox fx:id="meses" layoutX="127.0" layoutY="25.0" prefHeight="42.0" prefWidth="103.0" styleClass="custom-choice" />
+      <ImageView fitHeight="123.0" fitWidth="68.0" layoutX="24.0" layoutY="-20.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Imagenes/finzen_logo_only.png" />
+         </image></ImageView>
+      <ImageView fx:id="Ahorroimagen"  fitHeight="63.0" fitWidth="68.0" layoutX="242.0" onMouseClicked="#abrirVentanaAhorro" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Imagenes/hucha.png" />
+         </image>
+      </ImageView>
+       
+      
+
+   </children>
+
+</Pane>
