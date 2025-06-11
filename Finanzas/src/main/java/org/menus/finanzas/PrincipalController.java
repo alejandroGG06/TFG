@@ -12,10 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
+import javafx.util.StringConverter;
+
 import java.io.IOException;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PrincipalController {
@@ -34,35 +39,71 @@ public class PrincipalController {
     @FXML
     private ImageView Ahorroimagen;
 
-
     @FXML
-    private ChoiceBox<String> meses;
+    private ChoiceBox<YearMonth> meses;
 
     Usuario user = UsuarioSesion.getUsuariosesion();
     CategoriaService categoriaService = new CategoriaService();
 
+    private final Locale localeES = new Locale("es");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", localeES);
 
     @FXML
     public void initialize() {
         user = UsuarioSesion.getUsuariosesion();
 
-        cargarMeses();            // Llena el ComboBox con los meses disponibles
-        configurarEventoCombo();  // Configura la lógica de cambio de mes
+        cargarMeses();
+        configurarEventoCombo();
 
-        // ⚠️ Solo cargar datos si hay un mes seleccionado
-        String mesSeleccionado = meses.getValue();
-        if (mesSeleccionado != null) {
-            UsuarioSesion.setMesSeleccionado(mesSeleccionado);
-            cargarDatos();         // Carga datos del PieChart
-            mostrargastado();      // Muestra el total gastado
-            mostrarCategorias();   // Lista las categorías del mes
+        if (meses.getValue() != null) {
+            cargarDatos();
+            mostrargastado();
+            mostrarCategorias();
         }
 
-        mostrarSalario(); // Siempre mostramos el salario
+        mostrarSalario();
+    }
+    private void cargarMeses() {
+        List<YearMonth> listaMeses = categoriaService.obtenerMesesUnicos(user);
+        meses.setItems(FXCollections.observableArrayList(listaMeses));
+
+        meses.setConverter(new StringConverter<YearMonth>() {
+            @Override
+            public String toString(YearMonth mes) {
+                if (mes == null) return "";
+                return mes.format(DateTimeFormatter.ofPattern("MMMM", new Locale("es")));
+            }
+
+            @Override
+            public YearMonth fromString(String string) {
+                return YearMonth.parse(string, DateTimeFormatter.ofPattern("MMMM", new Locale("es")));
+            }
+        });
+
+        if (!listaMeses.isEmpty()) {
+            meses.getSelectionModel().selectFirst();
+            UsuarioSesion.setMesSeleccionado(formatearMes(meses.getValue()));
+        }
     }
 
-    public void cargarDatos() {
-        String mesSeleccionado = UsuarioSesion.getMesSeleccionado();
+
+
+    private void configurarEventoCombo() {
+        meses.setOnAction(e -> {
+            YearMonth seleccionado = meses.getValue();
+            if (seleccionado != null) {
+                UsuarioSesion.setMesSeleccionado(formatearMes(seleccionado));
+                cargarDatos();
+                mostrargastado();
+                mostrarCategorias();
+            }
+        });
+    }
+
+    private void cargarDatos() {
+        YearMonth mesSeleccionado = meses.getValue();
+        if (mesSeleccionado == null) return;
+
         Map<String, Integer> datos = categoriaService.obtenerGastosPorMes(user, mesSeleccionado);
 
         ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
@@ -71,7 +112,8 @@ public class PrincipalController {
         }
 
         pieChart.setData(pieData);
-        pieChart.setTitle("Gastos por Categoría – " + mesSeleccionado);
+        pieChart.setLabelsVisible(false);
+        pieChart.setTitle("Gastos por Categoría – " + formatearMes(mesSeleccionado));
     }
 
     private void mostrarSalario() {
@@ -83,52 +125,33 @@ public class PrincipalController {
     }
 
     private void mostrargastado() {
-        String mesSeleccionado = UsuarioSesion.getMesSeleccionado();
-        int total = categoriaService.obtenerGastoTotalDelMes(user, mesSeleccionado);
-        gastadototal.setText(total + "€");
-    }
+        YearMonth mes = meses.getValue();
+        if (mes == null) return;
 
-
-    private void cargarMeses() {
-        List<String> listaMeses = categoriaService.obtenerMesesUnicos(user);
-
-        if (!listaMeses.isEmpty()) {
-            meses.setItems(FXCollections.observableArrayList(listaMeses));
-            meses.getSelectionModel().selectFirst();
-            String mesSeleccionado = meses.getValue();
-            UsuarioSesion.setMesSeleccionado(mesSeleccionado);
-            cargarDatos();
-            mostrargastado();
-            mostrarCategorias();
-        }
-    }
-
-    private void configurarEventoCombo() {
-        meses.setOnAction(e -> {
-            String mesSeleccionado = meses.getValue();
-            UsuarioSesion.setMesSeleccionado(mesSeleccionado);
-            cargarDatos();
-            mostrargastado();
-            mostrarCategorias();
-        });
+        int gasto = categoriaService.obtenerGastoTotalDelMes(user, mes);
+        gastadototal.setText(" "+gasto +" €");
     }
 
     private void mostrarCategorias() {
-        String mesSeleccionado = UsuarioSesion.getMesSeleccionado();
+        YearMonth mesSeleccionado = meses.getValue();
+        if (mesSeleccionado == null) return;
+
         Map<String, String> categorias = categoriaService.categoriassPorMes(user, mesSeleccionado);
 
-        gastosBox.getChildren().clear(); // Limpiar el VBox
+        gastosBox.getChildren().clear();
 
         for (Map.Entry<String, String> entry : categorias.entrySet()) {
-            String nombre = entry.getKey();
-            String valor = entry.getValue(); // Aquí es el mes (fecha), pero puedes cambiarlo al monto si prefieres
-
-            Label label = new Label(nombre + ": " + valor);
+            Label label = new Label(entry.getKey() + ": " + entry.getValue());
             label.setStyle("-fx-font-family: 'Roboto Light'; -fx-font-size: 16px; -fx-text-fill: WHITE;");
             gastosBox.getChildren().add(label);
         }
     }
 
+    private String formatearMes(YearMonth mes) {
+        return mes.format(formatter);
+    }
+
+    // Métodos para abrir otras ventanas (sin cambios) ...
 
 
     @FXML
@@ -142,8 +165,7 @@ public class PrincipalController {
 
             root.getStylesheets().add(getClass().getResource("/css/crear.css").toExternalForm());
             Scene nuevaEscena = new Scene(root);
-            Stage nuevaVentana = new Stage();  // nueva ventana
-
+            Stage nuevaVentana = new Stage();
             nuevaVentana.setScene(nuevaEscena);
             nuevaVentana.setTitle("Nueva Vista");
             nuevaVentana.show();
@@ -152,14 +174,12 @@ public class PrincipalController {
         }
     }
 
-
     @FXML
     public void abrirVentanaAhorro() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Ahorro.fxml"));
             Parent root = loader.load();
             root.getStylesheets().add(getClass().getResource("/css/Ahorro.css").toExternalForm());
-
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -170,5 +190,4 @@ public class PrincipalController {
             e.printStackTrace();
         }
     }
-
 }

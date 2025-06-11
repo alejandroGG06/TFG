@@ -2,6 +2,8 @@ package BBDD;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -20,14 +22,11 @@ public class Categoria {
     @Column(name = "tipo", nullable = false, length = 10)
     private String tipo;
 
-    @Column(name = "fecha", nullable = false, length = 50)
-    private String fecha;
+    @Column(name = "fecha", nullable = false)
+    private LocalDate fecha;
 
     @Column(name = "inicial", nullable = false)
     private Integer inicial;
-
-    @Column(name = "mes", nullable = false, length = 11)
-    private String mes;
 
     public Integer getId() {
         return id;
@@ -61,11 +60,11 @@ public class Categoria {
         this.tipo = tipo;
     }
 
-    public String getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
@@ -75,14 +74,6 @@ public class Categoria {
 
     public void setInicial(Integer inicial) {
         this.inicial = inicial;
-    }
-
-    public String getMes() {
-        return mes;
-    }
-
-    public void setMes(String mes) {
-        this.mes = mes;
     }
 
 }

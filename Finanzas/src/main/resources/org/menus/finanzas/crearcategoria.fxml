@@ -7,7 +7,7 @@
 <Pane fx:id="formPane" prefHeight="400.0" prefWidth="600.0" styleClass="form-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.menus.finanzas.AñadirController">
 
     <TextField fx:id="nombreField" layoutX="52.0" layoutY="138.0" promptText="Nombre de la categoría" styleClass="custom-textfield" />
-    <TextField fx:id="fechaPicker" layoutX="52.0" layoutY="230.0" promptText="Fecha xx/xx/xxxx" styleClass="custom-textfield" />
+    <DatePicker fx:id="fechaPicker" layoutX="52.0" layoutY="230.0"  styleClass="custom-textfield" />
     <TextField fx:id="inicialField" layoutX="357.0" layoutY="230.0" promptText="Monto (€)" styleClass="custom-textfield" />
 
     <Button layoutX="375.0" layoutY="300.0" onAction="#guardarCategoria" styleClass="custom-button" text="Guardar categoría" />
@@ -18,6 +18,4 @@
         </image>
     </ImageView>
    <ChoiceBox fx:id="tipoField" layoutX="356.0" layoutY="138.0" prefWidth="176.0" styleClass="custom-textfield" />
-   <ChoiceBox fx:id="mesfield" layoutX="51.0" layoutY="300.0" prefHeight="25.0" prefWidth="178.0" styleClass="custom-textfield" />
-    
 </Pane>

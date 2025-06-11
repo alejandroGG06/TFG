@@ -49,7 +49,7 @@
          <Font name="Roboto Light" size="17.0" />
       </font>
       </Label>
-      <Label fx:id="gastadototal" layoutX="202.0" layoutY="193.0" prefHeight="42.0" prefWidth="117.0" styleClass="monto-salario">
+      <Label fx:id="gastadototal" layoutX="215.0" layoutY="193.0" prefHeight="42.0" prefWidth="117.0" styleClass="monto-salario">
          <font>
             <Font name="Roboto Light" size="30.0" />
          </font></Label>
@@ -58,7 +58,7 @@
          <image>
             <Image url="@../../../Imagenes/finzen_logo_only.png" />
          </image></ImageView>
-      <ImageView fx:id="Ahorroimagen"  fitHeight="63.0" fitWidth="68.0" layoutX="242.0" onMouseClicked="#abrirVentanaAhorro" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="Ahorroimagen" fitHeight="63.0" fitWidth="68.0" layoutX="242.0" layoutY="9.0" onMouseClicked="#abrirVentanaAhorro" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../Imagenes/hucha.png" />
          </image>

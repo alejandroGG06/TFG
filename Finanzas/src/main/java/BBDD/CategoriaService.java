@@ -5,25 +5,32 @@ package BBDD;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.stream.Collectors;
 
 
 public class CategoriaService {
 
     EntityManager em = Conector.getEntityManager();
 
-    public int obtenerGastoTotalDelMes(Usuario usuario, String mes) {
+    public int obtenerGastoTotalDelMes(Usuario usuario, YearMonth mes) {
         int total = 0;
-
         try {
+            LocalDate desde = mes.atDay(1);
+            LocalDate hasta = mes.atEndOfMonth();
+
             List<Integer> lista = em.createQuery(
-                            "SELECT c.inicial FROM Categoria c WHERE c.usuario.id = :id AND c.mes = :mes", Integer.class)
+                            "SELECT c.inicial FROM Categoria c WHERE c.usuario.id = :id AND c.fecha BETWEEN :desde AND :hasta", Integer.class)
                     .setParameter("id", usuario.getId())
-                    .setParameter("mes", mes)
+                    .setParameter("desde", desde)
+                    .setParameter("hasta", hasta)
                     .getResultList();
 
             for (Integer gasto : lista) {
@@ -32,44 +39,43 @@ public class CategoriaService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return total;
     }
 
-    public List<String> obtenerMesesUnicos(Usuario usuario) {
-        List<String> meses = new ArrayList<>();
-        try {
-            meses = em.createQuery(
-                            "SELECT DISTINCT c.mes FROM Categoria c WHERE c.usuario.id = :id ORDER BY c.mes ASC", String.class)
-                    .setParameter("id", usuario.getId())
-                    .getResultList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return meses;
+    public List<YearMonth> obtenerMesesUnicos(Usuario usuario) {
+        List<LocalDate> fechas = em.createQuery(
+                        "SELECT DISTINCT c.fecha FROM Categoria c WHERE c.usuario.id = :id ", LocalDate.class)
+                .setParameter("id", usuario.getId())
+                .getResultList();
+
+        return fechas.stream()
+                .map(YearMonth::from)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-
-    public Map<String, String> categoriassPorMes(Usuario usuario, String mes) {
+    public Map<String, String> categoriassPorMes(Usuario usuario, YearMonth mes) {
         Map<String, String> map = new HashMap<>();
+        LocalDate desde = mes.atDay(1);
+        LocalDate hasta = mes.atEndOfMonth();
 
         try {
             List<Categoria> lista = em.createQuery(
-                            "SELECT c FROM Categoria c WHERE c.usuario.id = :id AND c.mes = :mes ORDER BY c.nombre", Categoria.class)
+                            "SELECT c FROM Categoria c WHERE c.usuario.id = :id AND c.fecha BETWEEN :desde AND :hasta ORDER BY c.nombre", Categoria.class)
                     .setParameter("id", usuario.getId())
-                    .setParameter("mes", mes)
+                    .setParameter("desde", desde)
+                    .setParameter("hasta", hasta)
                     .getResultList();
 
             for (Categoria c : lista) {
-                map.put(c.getNombre(), c.getFecha());  // O puedes poner c.getInicial().toString()
+                map.put(c.getNombre(), c.getFecha().toString());  // Puedes cambiar por c.getInicial() si quieres mostrar montos
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return map;
     }
-
 
     public void crearCategoria(Categoria categoria) {
         try {
@@ -84,15 +90,18 @@ public class CategoriaService {
         }
     }
 
-    public Map<String, Integer> obtenerGastosPorMes(Usuario usuario, String mes) {
+
+    public Map<String, Integer> obtenerGastosPorMes(Usuario usuario, YearMonth mes) {
         Map<String, Integer> resultados = new HashMap<>();
+        LocalDate desde = mes.atDay(1);
+        LocalDate hasta = mes.atEndOfMonth();
 
         try {
             List<Object[]> lista = em.createQuery(
-                            "SELECT c.nombre, c.inicial FROM Categoria c " +
-                                    "WHERE c.usuario.id = :id AND c.mes = :mes", Object[].class)
+                            "SELECT c.nombre, c.inicial FROM Categoria c WHERE c.usuario.id = :id AND c.fecha BETWEEN :desde AND :hasta ", Object[].class)
                     .setParameter("id", usuario.getId())
-                    .setParameter("mes", mes)
+                    .setParameter("desde", desde)
+                    .setParameter("hasta", hasta)
                     .getResultList();
 
             for (Object[] fila : lista) {
@@ -102,18 +111,13 @@ public class CategoriaService {
                     resultados.merge(nombre, gasto, Integer::sum);
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return resultados;
     }
-
-
-
 }
-
 
 
 

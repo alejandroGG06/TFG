@@ -4,10 +4,7 @@ package org.menus.finanzas;
 
 import BBDD.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import javax.swing.*;
@@ -33,35 +30,26 @@ public class AñadirController {
     private ChoiceBox tipoField;
 
     @FXML
-    private  TextField fechaPicker;
+    private DatePicker fechaPicker;
 
     @FXML
     private TextField inicialField;
 
     @FXML
     private final CategoriaService categoriaService = new CategoriaService();
-
-    @FXML
-    private ChoiceBox mesfield;
-
     @FXML
     public void initialize() {
         tipoField.getItems().addAll("Fijo", "Variable");
         tipoField.setValue("Fijo");
 
-        mesfield.getItems().addAll("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-        mesfield.setValue("seleccione un mes");
     }
-
-
 
     @FXML
     private void guardarCategoria() {
         String nombre = nombreField.getText().trim();
         String tipo = tipoField.getValue().toString();
         String inicialStr = inicialField.getText().trim();
-        String fecha = fechaPicker.getText().trim();
-        String meses = mesfield.getValue().toString();
+        LocalDate fecha = fechaPicker.getValue();
 
         if (nombre.isEmpty() || tipo.isEmpty() || inicialStr.isEmpty() || fecha == null) {
             mostrarAlerta("campos incompletos", "los campos no deben estar vacios");
@@ -82,7 +70,6 @@ public class AñadirController {
             nueva.setInicial(inicial);
             nueva.setFecha(fecha);
             nueva.setUsuario(usuario);
-            nueva.setMes(meses);
 
             categoriaService.crearCategoria(nueva);
             if (principalController != null) {
