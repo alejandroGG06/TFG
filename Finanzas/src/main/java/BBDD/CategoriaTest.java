@@ -5,6 +5,7 @@ package BBDD;
 import org.junit.Test;
 
 import java.time.YearMonth;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,5 +41,19 @@ public class CategoriaTest {
         assertTrue(total > 0, "El total debería ser mayor que 0");
         assertEquals(750, total);  // Suponiendo que hay 2 categorías: 100 + 50
     }
+
+    @Test
+    public void testObtenerMesesUnicos() {
+        Usuario mockUsuario = new Usuario();
+        mockUsuario.setId(1);
+
+        CategoriaService service = new CategoriaService();
+        List<YearMonth> meses = service.obtenerMesesUnicos(mockUsuario);
+        System.out.println(" Resultado de obtenerMesesUnicos: " + meses);
+
+        assertNotNull(meses);
+        assertEquals(meses.contains("2025-06"), false, "el mes no debe ser tipo Sting");
+    }
+
 
 }
