@@ -33,7 +33,7 @@
                   <Font name="Roboto Light" size="20.0" />
                </font>
             </Label>
-            <Button layoutX="88.0" layoutY="369.0" onAction="#abrirvista" styleClass="boton-accion" text="Añadir">
+            <Button layoutX="47.0" layoutY="372.0" onAction="#abrirvista" styleClass="boton-accion" text="Añadir">
                <font>
                   <Font name="Roboto Light" size="13.0" />
                </font>
@@ -41,6 +41,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+            <Button layoutX="141.0" layoutY="373.0" mnemonicParsing="false" text="PDF" onAction="#generarPDF" styleClass="boton-accion"/>
          </children>
       </Pane>
 

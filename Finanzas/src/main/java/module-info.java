@@ -4,6 +4,10 @@ module org.menus.finanzas {
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
     requires java.desktop;
+    requires layout;
+    requires kernel;
+    requires org.junit.jupiter.api;
+    requires junit;
 
 
     opens BBDD to org.hibernate.orm.core;
@@ -11,5 +15,6 @@ module org.menus.finanzas {
 
     exports org.menus.finanzas;
     exports BBDD;
+
 }
 

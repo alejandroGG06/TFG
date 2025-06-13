@@ -4,6 +4,7 @@ package BBDD;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CategoriaService {
@@ -41,6 +44,19 @@ public class CategoriaService {
         }
         return total;
     }
+
+    public List<Categoria> obtenerCategoriasDelMes(Usuario usuario, YearMonth mes) {
+        LocalDate desde = mes.atDay(1);
+        LocalDate hasta = mes.atEndOfMonth();
+
+        return em.createQuery(
+                        "SELECT c FROM Categoria c WHERE c.usuario.id = :id AND c.fecha BETWEEN :desde AND :hasta ORDER BY c.fecha", Categoria.class)
+                .setParameter("id", usuario.getId())
+                .setParameter("desde", desde)
+                .setParameter("hasta", hasta)
+                .getResultList();
+    }
+
 
     public List<YearMonth> obtenerMesesUnicos(Usuario usuario) {
         List<LocalDate> fechas = em.createQuery(
@@ -118,6 +134,9 @@ public class CategoriaService {
         return resultados;
     }
 }
+
+
+
 
 
 

@@ -3,8 +3,15 @@ package org.menus.finanzas;
 //@author AlejandroGpublic
 
 import BBDD.*;
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import com.itextpdf.layout.Document;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,15 +19,16 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.util.StringConverter;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.*;
 
 public class PrincipalController {
@@ -150,6 +158,51 @@ public class PrincipalController {
     private String formatearMes(YearMonth mes) {
         return mes.format(formatter);
     }
+    @FXML
+    public void generarPDF() {
+        try {
+            YearMonth mesSeleccionado = meses.getValue();
+            if (mesSeleccionado == null) {
+                System.out.println("⚠️ No hay mes seleccionado.");
+                return;
+            }
+
+            // Obtener lista completa de categorías del mes (sin agrupar)
+            List<Categoria> categorias = categoriaService.obtenerCategoriasDelMes(user, mesSeleccionado);
+
+            // Ruta del PDF
+            String nombreMes = mesSeleccionado.getMonth().getDisplayName(TextStyle.FULL, new Locale("es"));
+            String ruta ="C:\\Users\\alejandro\\Documents\\" + nombreMes + "_" + mesSeleccionado.getYear() + ".pdf";
+
+            PdfWriter writer = new PdfWriter(ruta);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("Gastos de " + nombreMes + " " + mesSeleccionado.getYear()).setBold().setFontSize(16));
+
+            float[] columnWidths = {200F, 100F, 150F};
+            Table table = new Table(columnWidths);
+            table.addCell("Nombre");
+            table.addCell("Gasto (€)");
+            table.addCell("Fecha");
+
+            for (Categoria c : categorias) {
+                table.addCell(c.getNombre());
+                table.addCell(String.valueOf(c.getInicial()));
+                table.addCell(c.getFecha().toString());
+            }
+
+            document.add(table);
+            document.close();
+
+            System.out.println("✅ PDF generado en: " + ruta);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     // Métodos para abrir otras ventanas (sin cambios) ...
 
