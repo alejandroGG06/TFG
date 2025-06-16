@@ -37,14 +37,14 @@ public class AhorroController {
 
                 String mesFormateado = mes.format(formatter);
 
-                Label label = new Label("💸 Ahorro en " + mesFormateado + ": " + ahorroMes + " €");
+                Label label = new Label(" Ahorro en " + mesFormateado + ": " + ahorroMes + " €");
                 label.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
                 ahorroBox.getChildren().add(label);
             }
 
             ahorroBox.getChildren().add(new Separator());
 
-            Label total = new Label("💼 Total ahorrado al año: " + ahorroTotal + " €");
+            Label total = new Label("Total ahorrado al año: " + ahorroTotal + " €");
             total.setStyle("-fx-text-fill: #00ff99; -fx-font-size: 18px; -fx-font-weight: bold;");
             ahorroBox.getChildren().add(total);
         }

@@ -1,6 +1,7 @@
 package BBDD;
 
 import jakarta.persistence.*;
+import org.hibernate.Length;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

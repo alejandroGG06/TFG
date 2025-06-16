@@ -72,6 +72,9 @@ public class PrincipalController {
         mostrarSalario();
     }
     private void cargarMeses() {
+        // Guardamos el mes actual seleccionado antes de recargar
+        YearMonth mesActual = meses.getValue();
+
         List<YearMonth> listaMeses = categoriaService.obtenerMesesUnicos(user);
         meses.setItems(FXCollections.observableArrayList(listaMeses));
 
@@ -88,8 +91,12 @@ public class PrincipalController {
             }
         });
 
-        if (!listaMeses.isEmpty()) {
-            meses.getSelectionModel().selectFirst();
+        if (mesActual != null && listaMeses.contains(mesActual)) {
+            meses.getSelectionModel().select(mesActual);  // Restauramos el mes anterior
+            UsuarioSesion.setMesSeleccionado(formatearMes(mesActual));
+        } else if (!listaMeses.isEmpty()) {
+            // Si no existe el mes anterior (por ejemplo, lo eliminaron), seleccionamos el primero
+            meses.getSelectionModel().selectLast();
             UsuarioSesion.setMesSeleccionado(formatearMes(meses.getValue()));
         }
     }
@@ -163,7 +170,7 @@ public class PrincipalController {
         try {
             YearMonth mesSeleccionado = meses.getValue();
             if (mesSeleccionado == null) {
-                System.out.println("⚠️ No hay mes seleccionado.");
+                System.out.println("No hay mes seleccionado.");
                 return;
             }
 
@@ -195,7 +202,7 @@ public class PrincipalController {
             document.add(table);
             document.close();
 
-            System.out.println("✅ PDF generado en: " + ruta);
+            System.out.println("PDF generado en: " + ruta);
         } catch (Exception e) {
             e.printStackTrace();
         }

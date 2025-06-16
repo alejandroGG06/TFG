@@ -1,0 +1,27 @@
+/* Fondo general del splash */
+.root {
+    -fx-background-color: #0a1d2d;
+}
+
+/* Imagen del logo */
+.image-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.15), 10, 0, 0, 2);
+}
+
+/* Texto principal del Splash */
+.label {
+    -fx-font-family: 'Roboto Light';
+    -fx-font-size: 18px;
+    -fx-text-fill: white;
+    -fx-padding: 10 0 0 0;
+}
+
+/* Barra de progreso */
+.progress-bar {
+    -fx-accent: #21c995;  /* Verde menta suave */
+    -fx-control-inner-background: #163247;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-pref-height: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(33,201,149,0.3), 8, 0.4, 0, 2);
+}

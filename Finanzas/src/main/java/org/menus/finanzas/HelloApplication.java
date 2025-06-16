@@ -10,9 +10,9 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Carga.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        scene.getStylesheets().add(getClass().getResource("/css/Login.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/css/Carga.css").toExternalForm());
 
         stage.setTitle("FinZen");
         stage.setScene(scene);
